@@ -1,0 +1,46 @@
+# ./django-ninja/docker-compose.yml
+
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: container_db
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+    volumes:
+      - ./db_mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+  backend:
+    build: .
+    container_name: container_backend
+    profiles:
+      - dev
+    volumes:
+      - ./src:/app
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+    env_file:
+      - .env
+
+  backend-prod:
+    build: .
+    container_name: container_backend_prod
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    restart: unless-stopped
+    env_file:
+      - .env
+
+
