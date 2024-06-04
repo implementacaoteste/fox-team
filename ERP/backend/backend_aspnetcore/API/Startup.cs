@@ -25,8 +25,6 @@ namespace API
                         // Define o manipulador de referência para ignorar ciclos
                         options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
                     });
-            // Adiciona suporte ao controlador
-            services.AddControllers();
 
             // Adiciona o gerador Swagger
             services.AddSwaggerGen(c =>
@@ -38,6 +36,8 @@ namespace API
         // Este método é usado para configurar o pipeline de solicitação HTTP.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            logger.LogInformation($"Environment: {env.EnvironmentName}");
+            
             // Verifica se o ambiente é de desenvolvimento
             if (env.IsDevelopment())
             {
