@@ -1,0 +1,28 @@
+<!-- ./src/app/components/cadastro-produto/cadastro-produto.component.html -->
+
+<div>
+  <h1>{{ botaoAcao }} Produto</h1>
+  <form (ngSubmit)="salvar()">
+    <div>
+      <label for="nome">Nome:</label>
+      <input id="nome" [(ngModel)]="novoProduto.nome" name="nome" required>
+    </div>
+    <div>
+      <label for="preco">Preço:</label>
+      <input id="preco" type="number" [(ngModel)]="novoProduto.preco" name="preco" required>
+    </div>
+    <div>
+      <label for="quantidade">Quantidade:</label>
+      <input id="quantidade" type="number" [(ngModel)]="novoProduto.quantidade" name="quantidade" required>
+    </div>
+    <div>
+      <label for="ativo">Ativo:</label>
+      <input id="ativo" type="checkbox" [(ngModel)]="novoProduto.ativo" name="ativo">
+    </div>
+    <button type="submit">{{ botaoAcao }}</button>
+    <button type="button" (click)="cancelarEdicao()">Cancelar</button>
+  </form>
+  <app-mensagem-crud [tipo]="tipoMensagem" [mensagem]="mensagem"></app-mensagem-crud>
+</div>
+
+
