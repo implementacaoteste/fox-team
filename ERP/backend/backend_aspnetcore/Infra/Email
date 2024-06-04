@@ -1,0 +1,10 @@
+namespace Infra
+{
+    public class Email
+    {
+        public void EnviarEmail(string _assunto, string _destinatario)
+        {
+
+        }
+    }
+}
