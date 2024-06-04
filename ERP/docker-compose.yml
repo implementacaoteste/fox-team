@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  backend_aspnetcore:
+    build:
+      context: ./backend/backend_aspnetcore
+      dockerfile: Dockerfile
+    ports:
+      - "5001:80"
+    networks:
+      - erp-network
+    depends_on:
+      - db
+
+  backend_djangoninja:
+    build:
+      context: ./backend/backend_django_ninja
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    networks:
+      - erp-network
+    depends_on:
+      - db
+    env_file: ./backend/backend_django_ninja/src/.env
+
+  frontend_angular:
+    build:
+      context: ./frontend/frontend_angular
+      dockerfile: Dockerfile
+    ports:
+      - "4200:80"
+    networks:
+      - erp-network
+
+  # frontend_flutter:
+  #   build:
+  #     context: ./frontend/frontend_flutter
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - "8080:80"
+  #   networks:
+  #     - erp-network
+
+  db:
+    image: mysql:8.0
+    container_name: container_db
+    environment:
+      MYSQL_DATABASE: gestao_db
+      MYSQL_USER: usuario_db
+      MYSQL_PASSWORD: 123457
+      MYSQL_ROOT_PASSWORD: 123
+      MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+    volumes:
+      - ./database/db_mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    networks:
+      - erp-network
+
+  # database:
+  #   build:
+  #     context: ./database
+  #     dockerfile: Dockerfile
+  #   environment:
+  #     POSTGRES_DB: ${DB_DATABASE}
+  #     POSTGRES_USER: ${DB_USER}
+  #     POSTGRES_PASSWORD: ${DB_PASSWORD}
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - ./database/db_postgresql:/var/lib/postgresql/data
+  #   networks:
+  #     - erp-network
+
+networks:
+  erp-network:
