@@ -1,4 +1,4 @@
-# ./Dockerfile
+# ERP/frontend/frontend_angular/Dockerfile
 
 FROM node:18
 
@@ -20,8 +20,7 @@ RUN npm run build --prod
 RUN npm install -g http-server
 
 # Expor a porta que a aplicação irá rodar
-EXPOSE 8080
+EXPOSE 80
 
 # Comando para iniciar a aplicação Angular
-CMD ["http-server", "-p", "8080", "-a", "0.0.0.0", "dist/front-end-angular/browser"]
-
+CMD ["http-server", "dist/front-end-angular/browser", "-p", "80", "-a", "0.0.0.0"]

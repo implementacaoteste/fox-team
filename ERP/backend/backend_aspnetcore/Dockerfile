@@ -1,17 +1,18 @@
-FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
-WORKDIR /app
-EXPOSE 80
+# ERP/backend/backend_aspnetcore/Dockerfile
 
+# Use the official .NET SDK image to build the application
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY . .
-RUN dotnet restore "aspnetcore.csproj"
-RUN dotnet build "aspnetcore.csproj" -c Release -o /app/build
 
-FROM build AS publish
-RUN dotnet publish "aspnetcore.csproj" -c Release -o /app/publish
+COPY backend/backend_aspnetcore/*.csproj ./
+RUN dotnet restore
 
-FROM base AS final
+COPY backend/backend_aspnetcore/. ./
+WORKDIR /src
+RUN dotnet publish -c Release -o /app
+
+FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS runtime
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=build /app .
+
 ENTRYPOINT ["dotnet", "aspnetcore.dll"]
