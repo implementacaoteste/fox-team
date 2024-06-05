@@ -560,3 +560,6 @@ FodyWeavers.xsd
 *.sln.iml
 
 db_mysql/
+cmake-3.21.3-linux-x86_64/
+cmake-3.21.3-linux-x86_64.tar.gz
+pubspec.lock

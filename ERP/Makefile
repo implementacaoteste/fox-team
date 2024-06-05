@@ -33,6 +33,9 @@ restart: down up ps logs
 clear:
 	rm -rf database/db_mysql
 
+run_flutter:
+	cd frontend/frontend_flutter && flutter run
+
 install_dotnet:
 	sudo apt-get install -y wget apt-transport-https
 
@@ -50,3 +53,9 @@ install_dotnet:
 	
 	export PATH=$$PATH:~/.dotnet
 
+tree:
+	clear
+	cd .. && tree --prune -I ".angular|.vscode|dist|node_modules|bin|.dart_tool|.idea|lib|pacotes"
+
+
+	
