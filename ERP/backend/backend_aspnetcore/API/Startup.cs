@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace API
 {
@@ -18,7 +19,7 @@ namespace API
 
         public void ConfigureServices(IServiceCollection services)
         {
-                        // Adiciona suporte ao controlador
+            // Adiciona suporte ao controlador
             services.AddControllers()
                     .AddJsonOptions(options =>
                     {
@@ -34,9 +35,10 @@ namespace API
         }
 
         // Este método é usado para configurar o pipeline de solicitação HTTP.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILogger<Startup> logger)
         {
-            logger.LogInformation($"Environment: {env.EnvironmentName}");
+            //logger.LogInformation($"Environment: {env.EnvironmentName}");
+            logger.LogInformation("Iniciar a aplicação");
             
             // Verifica se o ambiente é de desenvolvimento
             if (env.IsDevelopment())

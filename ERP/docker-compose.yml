@@ -10,7 +10,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
     ports:
-      - "5001:80"
+      - "5000:5000"
+      - "5001:5001"
     networks:
       - erp-network
     depends_on:
