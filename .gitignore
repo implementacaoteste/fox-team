@@ -565,3 +565,5 @@ cmake-3.21.3-linux-x86_64.tar.gz
 pubspec.lock
 private_key.pem
 public_key.pem
+ERP/backend/backend_django_ninja/scripts/certificados/documento.pdf
+ERP/backend/backend_django_ninja/scripts/certificados/documento_assinado.pdf
