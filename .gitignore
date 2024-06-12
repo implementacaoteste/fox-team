@@ -563,3 +563,5 @@ db_mysql/
 cmake-3.21.3-linux-x86_64/
 cmake-3.21.3-linux-x86_64.tar.gz
 pubspec.lock
+private_key.pem
+public_key.pem
