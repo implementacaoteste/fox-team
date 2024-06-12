@@ -64,6 +64,7 @@ services:
       - ./database/db_mysql:/var/lib/mysql
     ports:
       - "3306:3306"
+    command: sleep infinity
     restart: unless-stopped
     networks:
       - erp-network

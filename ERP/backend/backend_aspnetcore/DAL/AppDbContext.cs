@@ -1,3 +1,5 @@
+//backend/backend_aspnetcore/DAL/AppDbContext.cs
+
 using Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -31,7 +33,8 @@ namespace DAL
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlite("Data Source=../DAL/db/app.db");
+                optionsBuilder.UseMySql("Server=container_db;Database=gestao_db;User=usuario_db;Password=123457;", 
+                    new MySqlServerVersion(new Version(8, 0, 21)));
             }
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -68,7 +71,7 @@ namespace DAL
             modelBuilder.Entity<CategoriaProduto>().HasData(
                 new CategoriaProduto { Id = 1, Descricao = "Novo" },
                 new CategoriaProduto { Id = 2, Descricao = "Usado" }
-                );
+            );
         }
     }
 }

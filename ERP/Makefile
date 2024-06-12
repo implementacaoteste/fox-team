@@ -23,10 +23,13 @@ logs:
 
 mysql:
 	docker exec -it container_db printenv | grep MYSQL # Mostra as variáveis de ambiente
-	docker exec -it container_db mysql -u$(DB_USER) -p$(DB_PASSWORD) $(DB_DATABASE)
+	docker exec -it container_db mysql -u usuario_db -p123457 gestao_db
+
+install_mysql_client:
+	docker exec -it erp-backend_aspnetcore-1 apt-get update && apt-get install -y default-mysql-client && rm -rf /var/lib/apt/lists/*
 
 aspnetcore:
-	docker exec -it erp-backend_aspnetcore-1
+	docker exec -it erp-backend_aspnetcore-1 bash
 
 restart: down up ps logs
 
