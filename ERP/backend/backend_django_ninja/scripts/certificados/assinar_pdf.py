@@ -1,71 +1,48 @@
 import os
-from PyPDF2 import PdfReader, PdfWriter
-from PyPDF2.generic import DictionaryObject, NameObject, create_string_object
-from Crypto.Signature import pkcs1_15
-from Crypto.Hash import SHA256
-from Crypto.PublicKey import RSA
+import hashlib
+import PyMuPDF
 
-# Função para carregar a chave privada
-def load_private_key(file_path, password='teste'):
-    with open(file_path, 'rb') as f:
-        private_key = RSA.import_key(f.read(), passphrase=password)
-    return private_key
+def assinar_pdf(input_pdf_path, output_pdf_path, signature_text):
+    # Abrir o arquivo PDF
+    pdf_document = PyMuPDF.open(input_pdf_path)
+    num_pages = len(pdf_document)
 
-# Função para calcular o hash do conteúdo do PDF
-def calculate_pdf_hash(file_path):
-    with open(file_path, 'rb') as f:
-        content = f.read()
-    pdf_hash = SHA256.new(content)
-    return pdf_hash
+    # Criar um novo objeto de assinatura
+    signature = PyMuPDF.fitz.PdfSignature()
 
-# Função para assinar o hash
-def sign_hash(hash, private_key):
-    signature = pkcs1_15.new(private_key).sign(hash)
-    return signature
+    # Configurar a aparência da assinatura (opcional)
+    signature.set_font(PyMuPDF.fitz.FONT_HELVETICA, 12)
+    signature.set_text(signature_text)
+    signature.set_color(0, 0, 1)  # Cor da assinatura: azul
 
-# Função para adicionar assinatura e hash no PDF
-def add_signature_to_pdf(input_pdf_path, output_pdf_path, hash, signature):
-    reader = PdfReader(input_pdf_path)
-    writer = PdfWriter()
+    # Configurar a posição da assinatura (neste exemplo, no canto inferior direito da página)
+    signature.set_location(num_pages - 1, [pdf_document.page(num_pages - 1).rect.width - 150, 20, 200, 50])
 
-    for page_num in range(len(reader.pages)):
-        page = reader.pages[page_num]
-        writer.add_page(page)
+    # Configurar o motivo da assinatura (opcional)
+    signature.set_reason("Documento assinado digitalmente")
 
-    # Adicionando o hash e a assinatura no PDF como metadata
-    metadata = DictionaryObject()
-    metadata.update({
-        NameObject('/Hash'): create_string_object(hash.hexdigest()),
-        NameObject('/Signature'): create_string_object(signature.hex())
-    })
-    writer.add_metadata(metadata)
+    # Configurar o método de criptografia e hash (SHA256)
+    signature.set_digest_algorithm(PyMuPDF.fitz.DIGEST_SHA256)
 
-    with open(output_pdf_path, 'wb') as output_pdf:
-        writer.write(output_pdf)
+    # Assinar todas as páginas do PDF
+    for page_num in range(num_pages):
+        pdf_page = pdf_document.load_page(page_num)
+        pdf_page.add_signature(signature)
 
-# Caminhos para os arquivos
-current_dir = os.path.dirname(os.path.abspath(__file__))
-private_key_path = os.path.join(current_dir, 'private_key.pem')
-input_pdf_path = os.path.join(current_dir, 'documento.pdf')
-output_pdf_path = os.path.join(current_dir, 'documento_assinado.pdf')
+    # Salvar o PDF assinado
+    pdf_document.save(output_pdf_path)
+    pdf_document.close()
 
-try:
-    # Carregar chave privada e assinar o conteúdo
-    password = 'teste'  # input("Enter PEM pass phrase: ").encode('utf-8')
-    private_key = load_private_key(private_key_path, password=password)
+    print(f"Documento PDF assinado com sucesso em: {output_pdf_path}")
 
-    # Calcular o hash do conteúdo
-    pdf_hash = calculate_pdf_hash(input_pdf_path)
+if __name__ == "__main__":
+    # Caminhos para os arquivos
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    input_pdf_path = os.path.join(current_dir, 'documento.pdf')
+    output_pdf_path = os.path.join(current_dir, 'documento_assinado_pymupdf.pdf')
 
-    # Gerar a assinatura
-    signature = sign_hash(pdf_hash, private_key)
+    # Texto da assinatura
+    signature_text = "Assinado por: Seu Nome"
 
-    # Adicionar a assinatura e o hash ao PDF
-    add_signature_to_pdf(input_pdf_path, output_pdf_path, pdf_hash, signature)
-
-    print("Documento PDF assinado com sucesso.")
-
-except FileNotFoundError as e:
-    print(f"Erro ao processar arquivos: {e}")
-except Exception as e:
-    print(f"Erro inesperado: {e}")
+    # Assinar o PDF
+    assinar_pdf(input_pdf_path, output_pdf_path, signature_text)
