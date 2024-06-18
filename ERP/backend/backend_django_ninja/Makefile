@@ -30,7 +30,6 @@ up-prod:
 # Tarefa para parar e remover os serviços Docker
 down:
 	docker-compose down
-	docker network prune -f
 
 # Tarefa para executar o servidor Django localmente
 run:
@@ -52,9 +51,7 @@ test:
 
 # Tarefa para exibir os logs dos serviços Docker
 logs:
-	docker-compose logs
-	docker-compose logs -f backend-prod
-	docker-compose logs -f backend
+	docker-compose logs -f
 
 # Tarefa para acessar o terminal interativo do contêiner da aplicação
 backend:
@@ -71,7 +68,7 @@ ps:
 
 # Tarefa para acessar o MySQL do contêiner
 mysql:
-	docker exec -it container_db mysql -u $(DB_USER) -p
+	docker exec -it container_db mysql -u $(DB_USER) -p $(PASSWORD)
 
 # Tarefa para reiniciar os serviços Docker em desenvolvimento
 restart: down build up ps logs
@@ -87,12 +84,13 @@ clear:
 	docker rmi django-ninja-backend mysql -f
 	docker rmi django-ninja-backend-prod mysql -f
 	docker image prune -f
+	docker image prune -a
 	rm -rf db_mysql
 	python3 scripts/remove_pycache.py
-	docker rmi mysql:8.0
-	docker ps
-	docker images
-	sleep 2
 	clear
+	make ps
+	sleep 5
+	clear
+	make restart
 
 
