@@ -4,7 +4,7 @@ import os
 import sys
 
 def criar_app(app_name):
-    base_path = f"src/apps/{app_name}"
+    base_path = f"../src/apps/{app_name}"
     
     directories = [
         base_path,
