@@ -35,17 +35,17 @@ services:
     environment:
       - TZ=America/Sao_Paulo  # Adiciona a configuração do fuso horário
 
-  backend-prod:
-    build: .
-    container_name: container_backend_prod
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-    restart: unless-stopped
-    env_file:
-      - .env
-    environment:
-      - TZ=America/Sao_Paulo  # Adiciona a configuração do fuso horário
+  # backend-prod:
+  #   build: .
+  #   container_name: container_backend_prod
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     - db
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - TZ=America/Sao_Paulo  # Adiciona a configuração do fuso horário
 
 

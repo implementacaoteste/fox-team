@@ -51,7 +51,8 @@ test:
 
 # Tarefa para exibir os logs dos serviços Docker
 logs:
-	docker-compose logs -f
+	docker logs container_backend -f
+#	docker-compose logs -f
 
 # Tarefa para acessar o terminal interativo do contêiner da aplicação
 backend:
@@ -68,7 +69,7 @@ ps:
 
 # Tarefa para acessar o MySQL do contêiner
 mysql:
-	docker exec -it container_db mysql -u $(DB_USER) -p $(PASSWORD)
+	docker exec -it container_db mysql -u usuario_db -p123457
 
 # Tarefa para reiniciar os serviços Docker em desenvolvimento
 restart: down build up ps logs
@@ -78,11 +79,11 @@ restart-prod: down build up-prod ps
 
 # Tarefa para limpar o ambiente de desenvolvimento
 clear:
-	docker stop $(CONTAINER_BACKEND)
-	docker rm $(CONTAINER_BACKEND)
+	# docker stop $(CONTAINER_BACKEND)
+	# docker rm $(CONTAINER_BACKEND)
 	make down
-	docker rmi django-ninja-backend mysql -f
-	docker rmi django-ninja-backend-prod mysql -f
+	# docker rmi django-ninja-backend mysql -f
+#	docker rmi django-ninja-backend-prod mysql -f
 	docker image prune -f
 	docker image prune -a
 	rm -rf db_mysql

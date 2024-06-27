@@ -19,8 +19,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.cadastro',
-    'apps.restaurante',
     'apps.certifica',
+    'apps.configuracao',
+    'apps.gestao_de_projeto',
+    'apps.restaurante',
     'core',
 ]
 
@@ -103,3 +105,5 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+

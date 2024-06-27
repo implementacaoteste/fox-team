@@ -3,8 +3,16 @@
 from django.db import models
 
 class Prato(models.Model):
-	descricao = models.CharField(max_length=150)
-	ativo = models.BooleanField(default=True)
+    descricao = models.CharField(max_length=150)
+    ativo = models.BooleanField(default=True)
 
-	def __str__(self):
-		return self.descricao
+    def __str__(self):
+        return self.descricao
+
+    class Meta:
+        verbose_name = 'prato'
+        verbose_name_plural = 'pratos'
+        db_table = 'prato'
+
+
+
