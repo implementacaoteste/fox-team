@@ -2,6 +2,10 @@
 
 version: '3.8'
 
+networks:
+  backend_network:
+    driver: bridge
+
 services:
   db:
     image: mysql:8.0
@@ -14,8 +18,11 @@ services:
       TZ: America/Sao_Paulo  # Adiciona a configuração do fuso horário
     volumes:
       - ./db_mysql:/var/lib/mysql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql  # Monta o script SQL
     ports:
       - "3306:3306"
+    networks:
+      - backend_network
     restart: unless-stopped
 
   backend:
@@ -29,11 +36,15 @@ services:
       - "8001:8000"
     depends_on:
       - db
+    networks:
+      - backend_network
     restart: unless-stopped
     env_file:
       - .env
     environment:
       - TZ=America/Sao_Paulo  # Adiciona a configuração do fuso horário
+      - DJANGO_SETTINGS_MODULE=core.settings
+      - PYTHONPATH=/app
 
   # backend-prod:
   #   build: .

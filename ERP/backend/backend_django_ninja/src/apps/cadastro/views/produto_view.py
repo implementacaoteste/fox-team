@@ -1,6 +1,7 @@
 # ./src/apps/cadastro/views/produto_view.py
 
 from ninja import Router
+# from django_ninja.responses import Response  # Ajuste na importação do Response
 from ..schemas.produto_schema import ProdutoSchema
 from ..services.produto_service import ProdutoService
 
@@ -15,6 +16,7 @@ def buscar_todos(request):
 def inserir(request, produto: ProdutoSchema):
 	produto = ProdutoService.inserir(produto.dict())
 	return ProdutoSchema.from_orm(produto)
+	# return Response(ProdutoSchema.from_orm(produto), status=201)  # Usando Response corretamente
 
 @produto_router.get("/produto/{id}")
 def buscar_por_id(request, id: int):

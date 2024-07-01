@@ -47,7 +47,7 @@ migrate-prod:
 
 # Tarefa para executar os testes da aplicação
 test:
-	python manage.py test
+	docker-compose exec backend bash -c "export DJANGO_SETTINGS_MODULE=core.settings && export PYTHONPATH=/app && pytest"
 
 # Tarefa para exibir os logs dos serviços Docker
 logs:
@@ -90,8 +90,6 @@ clear:
 	python3 scripts/remove_pycache.py
 	clear
 	make ps
-	sleep 5
-	clear
 	make restart
 
 

@@ -1,5 +1,6 @@
 # .django-nija/src/core/settings.py
 
+import sys
 from pathlib import Path
 from decouple import config, Csv
 
@@ -76,8 +77,22 @@ DATABASES = {
         'PASSWORD': config('DB_PASSWORD'), # Senha do banco de dados
         'HOST': config('DB_HOST'), # Nome do serviço do banco de dados
         'PORT': config('DB_PORT'),
+    },
+    'test': {
+        'ENGINE': config('DB_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': 'test_gestao_db',
+        'USER': config('DB_USER'),
+        'PASSWORD': config('DB_PASSWORD'),
+        'HOST': config('DB_HOST'),
+        'PORT': config('DB_PORT'),
     }
 }
+
+# Configuração para evitar criação automática de banco de dados durante os testes
+if 'test' in sys.argv:
+    DATABASES['default']['ATOMIC_REQUESTS'] = True
+    DATABASES['default']['NAME'] = 'test_gestao_db'
+    DATABASES['default']['OPTIONS'] = {'init_command': 'SET foreign_key_checks=0'}
 
 AUTH_PASSWORD_VALIDATORS = [
     {

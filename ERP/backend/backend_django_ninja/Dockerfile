@@ -47,6 +47,7 @@ COPY ./src .
 
 # Definir PATH do ambiente virtual
 ENV PATH="/venv/bin:$PATH"
+ENV PYTHONPATH="/app:${PYTHONPATH}"
 
 EXPOSE 8000
 
