@@ -9,7 +9,7 @@ def api_client():
 
 @pytest.mark.django_db
 def test_get_produto(api_client):
-    response = api_client.get('/api/cadastro/produto/')
+    response = api_client.get('/api/cadastro-produto/produto/')
     assert response.status_code == 200
     assert response.json() == []  # Ajuste conforme a resposta esperada
 
@@ -21,6 +21,6 @@ def test_create_produto(api_client):
         "quantidade": 15,
         "ativo": True
     }
-    response = api_client.post('/api/cadastro/produto/', data, content_type='application/json')
+    response = api_client.post('/api/cadastro-produto/produto/', data, content_type='application/json')
     assert response.status_code == 200
     assert response.json()['nome'] == "Fumo Maratá"

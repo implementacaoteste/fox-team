@@ -208,7 +208,7 @@ def main(nome_app, nome_entidade, artigo):
          f"return {{\"mensagem\": \"{verbose(nome_entidade)} excluíd{artigo} com sucesso!\"}}\n\n"
          "# TODO: Importar a router no urls.py do core:\n\n"
          f"# from apps.{nome_app}.views.{nome_entidade}_view import {nome_entidade}_router\n\n"
-         f"# api.add_router(\"{nome_app}\", {nome_entidade}_router)\n\n"),
+         f"# api.add_router(\"{nome_app}-{nome_entidade}\", {nome_entidade}_router)\n\n"),
 
         (os.path.join(caminho_base, 'schemas', f'{nome_entidade}_schema.py'), 
          f"# ./src/apps/{nome_app}/schemas/{nome_entidade}_schema.py\n\n"
